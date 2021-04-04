@@ -1,6 +1,8 @@
 from pytube import YouTube
-from youtube_dl import YoutubeDL
 from time import sleep
+import os
+import moviepy.editor as mp
+
 
 while True:
 
@@ -14,21 +16,39 @@ while True:
     # don't past link playlist here
     # download Video
     if select == '1':
-        from pytube import YouTube
         url = input('Past your link here: ')
         youtube = YouTube(url)
-        print('downloading...')
-        youtube.streams.get_highest_resolution().download(
-            output_path='VideoDownloadPython')
-        sleep(2.0)
-        print('download completed as sucess')
+        res = input('''Resolution
+        1 = 360p
+        2 = 720p
+        3 = 1080p
+        write here: ''')
+        if res == 1:
+            youtube.streams.get_by_itag(itag=18).download(
+                output_path='VideoDownloadPython')
+            print(f'downloading {youtube.title}...')
+        elif res == 2:
+            youtube.streams.get_by_itag(itag=22).download(
+                output_path='VideoDownloadPython')
+            print(f'downloading {youtube.title}...')
+        else:
+            youtube.streams.get_highest_resolution().download(
+                output_path='VideoDownloadPython')
+            print(f'downloading{youtube.title}...')
+            sleep(2.0)
+            print('download completed as sucess')
 
     # download Audio
     elif select == '2':
-        from youtube_dl import YoutubeDL
         url2 = input('Past your link here: ')
-        audio_downloader = YoutubeDL({'format': 'bestaudio'})
-        audio_downloader.extract_info(url2)
+        yt = YouTube(url2)
+        work_folder = os.path.split(__file__)[0]
+        audios = yt.streams.get_audio_only("webm")
+        audios.download(work_folder)
+        v = mp.AudioFileClip(os.path.join(
+            work_folder, audios.default_filename))
+        v.write_audiofile(os.path.join(work_folder, f"{yt.title}.mp3"))
+        print('Downloading...')
         sleep(2.0)
         print('download completed as sucess')
 
@@ -42,10 +62,13 @@ while True:
             video = YouTube(url)
             print('downloading...')
             stream = video.streams.get_highest_resolution()
-            stream.download(output_path='PlaylistDownloadPython')
+            stream.download(output_path='Playlist')
             print('download completed as sucess')
 
-    cont = str(input("Do you want to continue?:[Y/N] ")).upper()
+    else:
+        print('Option invalid please try again.')
+
+    cont = str(input("Do you want to continue (y/n) ?")).upper()
     if cont == "N":
         print("Thanks :)")
         break
