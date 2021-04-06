@@ -157,7 +157,7 @@ while True:
     # Exit Programm
     elif select == '5':
         print("See you late:)")
-        break
+        exit()
 
     else:
         print('Option invalid please try again.')
