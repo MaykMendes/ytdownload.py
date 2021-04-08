@@ -58,16 +58,28 @@ while True:
     write here: >> ''')
         if res == '1':
             print(f"Downloading {video.title}...")
-            video.streams.get_highest_resolution().download(
-            output_path="VideoMP4")
+            try:
+                video.streams.get_by_itag(itag= 37).download(
+                output_path="VideoMP4")
+            except AttributeError:
+                video.streams.get_by_itag(itag= 22).download(
+                output_path="VideoMP4")
         elif res == '2':
             print(f"Downloading {video.title}...")
-            video.streams.get_by_itag(itag= 18).download(
-            output_path="VideoMP4")
-        elif res == 3:
+            try:
+                video.streams.get_by_itag(itag= 35).download(
+                output_path="VideoMP4")
+            except AttributeError:
+                video.streams.get_by_itag(itag= 18).download(
+                output_path="VideoMP4")
+        elif res == '3':
             print(f"Downloading {video.title}...")
-            video.streams.get_lowest_resolution().download(
-            output_path="VideoMP4")
+            try:
+                video.streams.get_by_itag(5).download(
+                output_path="VideoMP4")
+            except AttributeError:
+                video.streams.get_lowest_resolution().download(
+                output_path="VideoMP4")
         else:
             print("Unavailable option, try again")
             continue
@@ -97,9 +109,10 @@ while True:
         print(yt.title + " has been successfully downloaded.")
 
     # Download Playlist MP4
-    elif select == '3':
+   elif select == '3':
         url = (
             str(input("Enter the URL of the playlist video you want to download: \n>> ")))
+        is_playlist(url)
         PLAYLIST_URL = url
         playlist = Playlist(PLAYLIST_URL)
         res = input('''Resolution
@@ -110,22 +123,37 @@ while True:
         print(f'downloading playlist: {playlist.title}...')
         for url in playlist.video_urls:
             if res == '1':
-                video = YouTube(url)
-                stream = video.streams.get_highest_resolution()
-                stream.download(output_path='VideoPlaylistMP4')
-                print(f'downloading {video.title}...')
+                try:
+                    video = YouTube(url)
+                    print(f'downloading {video.title}...')
+                    stream = video.streams.get_by_itag(itag= 37)
+                    stream.download(output_path='VideoPlaylistMP4')
+                except AttributeError:
+                    video = YouTube(url)
+                    stream = video.streams.get_by_itag(itag= 22)
+                    stream.download(output_path='VideoPlaylistMP4')
 
             elif res == '2':
-                video = YouTube(url)
-                stream = video.streams.get_by_itag(itag=18)
-                stream.download(output_path='VideoPlaylistMP4')
-                print(f'downloading {video.title}...')
+                try:
+                    video = YouTube(url)
+                    print(f'downloading {video.title}...')
+                    stream = video.streams.get_by_itag(itag=35)
+                    stream.download(output_path='VideoPlaylistMP4')
+                except AttributeError:
+                    video = YouTube(url)
+                    stream = video.streams.get_by_itag(itag= 18)
+                    stream.download(output_path='VideoPlaylistMP4')
 
             elif res == '3':
-                video = YouTube(url)
-                stream = video.streams.get_lowest_resolution()
-                stream.download(output_path='VideoPlaylistMP4')
-                print(f'downloading {video.title}...')
+                try:
+                    video = YouTube(url)
+                    print(f'downloading {video.title}...')
+                    stream = video.streams.get_by_itag(itag= 5)
+                    stream.download(output_path='VideoPlaylistMP4')
+                except AttributeError:
+                    video = YouTube(url)
+                    stream = video.streams.get_lowest_resolution()
+                    stream.download(output_path='VideoPlaylistMP4')
 
             else:
                 print("Unavailable option, try again")
