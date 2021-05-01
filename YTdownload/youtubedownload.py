@@ -1,3 +1,5 @@
+# Run the program inside a folder
+
 from pytube import YouTube, Playlist #pip install pytube
 from time import sleep
 import os #pip install os
