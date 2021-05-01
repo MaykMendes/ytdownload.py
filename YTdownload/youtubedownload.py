@@ -1,8 +1,8 @@
-from pytube import YouTube, Playlist
+from pytube import YouTube, Playlist #pip install pytube
 from time import sleep
-import os
-import moviepy.editor as mp
-import pyfiglet
+import os #pip install os
+import moviepy.editor as mp #pip install moviepy
+import pyfiglet #pip install pyflight
 
 
 class Download:
