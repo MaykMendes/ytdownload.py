@@ -4,58 +4,30 @@ import os
 import moviepy.editor as mp
 import pyfiglet
 
-# Banner
-banner = pyfiglet.figlet_format("by Mayk Mendes by D1NNO")
-print(banner)
 
-# Is Playlist?
+class Download:
 
+    banner = pyfiglet.figlet_format("by Mayk Mendes by D1NNO")
+    print(banner)
 
-def is_playlist(url):
-    if len(url) >= 83:
-        if url.find("&list=") == 43:
-            return True
-    elif len(url) >= 72:
-        if url.find("?list=") == 32:
-            return True
-    return False
+    def createFolder(directory):
 
-# Creat Folder
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+        except OSError:
+            print('Error: Creating directory. ' + directory)
+    createFolder('./AudioMP3/')
 
+    def downloadMP4():
 
-def createFolder(directory):
-    try:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-    except OSError:
-        print('Error: Creating directory. ' + directory)
-
-
-createFolder('./AudioMP3/')
-
-
-# Loop
-while True:
-
-    # Select Option
-    select = input('''Select a option(number) and write below
-    1 = Download MP4
-    2 = Download MP3
-    3 = Download MP4 Playlist 
-    4 = Download MP3 Playlist
-    5 = Exit
-    Write here >> ''')
-
-    # Don't Past Link Playlist Here
-    # Download MP4
-    if select == '1':
         url = input("Enter the url of the video: \n>>")
         video = YouTube(url)
         res = input('''Resolution
-    1 = High resolution
-    2 = Medium resolution
-    3 = Low resolution
-    write here: >> ''')
+        1 = High resolution
+        2 = Medium resolution
+        3 = Low resolution
+        write here: >> ''')
         if res == '1':
             print(f"Downloading {video.title}...")
             try:
@@ -82,11 +54,11 @@ while True:
                     output_path="VideoMP4")
         else:
             print("Unavailable option, try again")
-            continue
+
         print("Download completed")
 
-    # Download MP3
-    elif select == '2':
+    def downloadMP3():
+
         yt = YouTube(
             str(input("Enter the URL of the audio you want to download: \n>> ")))
 
@@ -110,18 +82,18 @@ while True:
         except FileExistsError:
             print("\033]mThat Audio file already exists\033[m")
 
-    # Download Playlist MP4
-    elif select == '3':
+    def downloadplaylistMP4():
+
         url = (
             str(input("Enter the URL of the playlist video you want to download: \n>> ")))
         is_playlist(url)
         PLAYLIST_URL = url
         playlist = Playlist(PLAYLIST_URL)
         res = input('''Resolution
-    1 - High resolution
-    2 - Medium resolution
-    3 - Low resolution
-    write here: >> ''')
+        1 - High resolution
+        2 - Medium resolution
+        3 - Low resolution
+        write here: >> ''')
         print(f'downloading playlist: {playlist.title}...')
         for url in playlist.video_urls:
             if res == '1':
@@ -159,12 +131,11 @@ while True:
 
             else:
                 print("Unavailable option, try again")
-            continue
 
         print('\033[1;32mdownload completed as sucess\033[m')
 
-    # Download Playlist MP3
-    elif select == '4':
+    def downloadplaylistMP3():
+
         url = (
             str(input("Enter the URL of the playlist audio you want to download: \n>> ")))
         is_playlist(url)
@@ -182,7 +153,30 @@ while True:
 
         print("Your playlist audios has been succesful downloaded")
 
-    # Exit Programm
+
+while True:
+
+    # Select Option
+    select = input('''Select a option(number) and write below
+    1 = Download MP4
+    2 = Download MP3
+    3 = Download MP4 Playlist 
+    4 = Download MP3 Playlist
+    5 = Exit
+    Write here >> ''')
+
+    if select == '1':
+        Download.downloadMP4()
+
+    elif select == '2':
+        Download.downloadMP3()
+
+    elif select == '3':
+        Download.downloadplaylistMP4()
+
+    elif select == '4':
+        Download.downloadplaylistMP3()
+
     elif select == '5':
         print("See you late:)")
         break
